@@ -40,7 +40,7 @@ public class InventoryPanelUpdater {
                 ctx.plugin,
                 (task) -> {
                     Inventory inv = p.getOpenInventory().getTopInventory();
-                    InventoryHolder holder = inv.getHolder();
+                    InventoryHolder holder = inv.getHolder(false);
 
                     // Stop everything if the panel is closed
                     if (!(holder instanceof InventoryPanel) || holder != panel) {
@@ -77,7 +77,7 @@ public class InventoryPanelUpdater {
                 ctx.plugin,
                 (task) -> {
                     Inventory inv = p.getOpenInventory().getTopInventory();
-                    InventoryHolder holder = inv.getHolder();
+                    InventoryHolder holder = inv.getHolder(false);
                     if (!(holder instanceof InventoryPanel) || holder != panel) {
                         stopUpdater(); // only stop this task, heartbeat may continue
                         return;

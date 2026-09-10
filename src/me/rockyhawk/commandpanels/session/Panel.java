@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -66,7 +68,9 @@ public abstract class Panel {
         }
 
         // Do not allow the same panel to be opened again if already open
-        return !(p.getOpenInventory().getTopInventory().getHolder() instanceof InventoryPanel panel)
+        InventoryView view = p.getOpenInventory();
+        InventoryHolder holder = view.getTopInventory().getHolder(false);
+        return !(holder instanceof InventoryPanel panel)
                 || !panel.getName().equals(getName());
     }
 
