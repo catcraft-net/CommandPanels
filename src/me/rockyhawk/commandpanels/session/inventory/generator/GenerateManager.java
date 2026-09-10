@@ -43,7 +43,7 @@ public class GenerateManager implements Listener {
     public void onInventoryOpen(InventoryOpenEvent e) {
         if (!(e.getPlayer() instanceof Player player)) return;
 
-        InventoryHolder holder = e.getInventory().getHolder();
+        InventoryHolder holder = e.getInventory().getHolder(false);
         if (isInGenerateMode(player) && (holder instanceof BlockState || holder instanceof DoubleChest)) {
             handleInventoryOpen(player, e.getInventory());
             e.setCancelled(true);

@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,14 +42,16 @@ public class InventoryEvents implements Listener {
         player.getScheduler().run(ctx.plugin, task -> {
 
             // If inventory event was for a panel
-            if (event.getInventory().getHolder() instanceof InventoryPanel panel) {
+            InventoryHolder closedHolder = event.getInventory().getHolder(false);
+            if (closedHolder instanceof InventoryPanel panel) {
 
                 // Run on close OR on refresh
                 itemSanitiser(player.getInventory());
                 itemDropper(player, event.getInventory());
 
                 // Panel was just refreshed, not closed
-                if(player.getOpenInventory().getTopInventory().getHolder() instanceof InventoryPanel currentPanel
+                InventoryView currentView = player.getOpenInventory();
+                if(currentView.getTopInventory().getHolder(false) instanceof InventoryPanel currentPanel
                         && currentPanel == panel){
                     return;
                 }
@@ -82,8 +86,9 @@ public class InventoryEvents implements Listener {
     }
 
     private void closePanels(Player p){
-        if (p.getOpenInventory() != null) { // Player has an open inventory
-            if (p.getOpenInventory().getTopInventory().getHolder() instanceof InventoryPanel) {
+        InventoryView view = p.getOpenInventory();
+        if (view != null) { // Player has an open inventory
+            if (view.getTopInventory().getHolder(false) instanceof InventoryPanel) {
                 p.closeInventory();
             }
         }

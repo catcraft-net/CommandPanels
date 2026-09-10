@@ -45,7 +45,7 @@ public class ClickEvents implements Listener {
     public void onPlayerInventoryClick(InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
         if (e.getClickedInventory() == null) return;
-        if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof InventoryPanel panel)) return;
+        if (!(e.getView().getTopInventory().getHolder(false) instanceof InventoryPanel panel)) return;
         if (e.getClickedInventory() != e.getView().getBottomInventory()) return;
 
         // Cancel player inventory click if locked
@@ -58,7 +58,7 @@ public class ClickEvents implements Listener {
     public void onOutsideInventoryClick(InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
         if (e.getClickedInventory() != null) return;
-        if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof InventoryPanel panel)) return;
+        if (!(e.getView().getTopInventory().getHolder(false) instanceof InventoryPanel panel)) return;
 
         // Run outside command actions
         CommandActions actions = panel.getOutsideCommands();
@@ -73,7 +73,8 @@ public class ClickEvents implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
         if (e.getClickedInventory() == null) return;
-        if (!(e.getClickedInventory().getHolder() instanceof InventoryPanel panel)) return;
+        Inventory clickedInventory = e.getClickedInventory();
+        if (!(clickedInventory.getHolder(false) instanceof InventoryPanel panel)) return;
 
         ItemStack item = e.getCurrentItem();
         if (item == null) return;
@@ -118,7 +119,7 @@ public class ClickEvents implements Listener {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         Inventory topInventory = event.getView().getTopInventory();
-        if(!(topInventory.getHolder() instanceof InventoryPanel)) return;
+        if(!(topInventory.getHolder(false) instanceof InventoryPanel)) return;
 
         // Only care about drag targets in the top inventory
         int topSize = topInventory.getSize();
